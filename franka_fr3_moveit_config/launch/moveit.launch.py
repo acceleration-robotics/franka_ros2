@@ -154,6 +154,7 @@ def generate_launch_description():
             trajectory_execution,
             moveit_controllers,
             planning_scene_monitor_parameters,
+            {"use_sim_time": True}
         ],
     )
 
@@ -232,11 +233,12 @@ def generate_launch_description():
 
     robot_arg = DeclareLaunchArgument(
         robot_ip_parameter_name,
+        default_value='false',
         description='Hostname or IP address of the robot.')
 
     use_fake_hardware_arg = DeclareLaunchArgument(
         use_fake_hardware_parameter_name,
-        default_value='false',
+        default_value='true',
         description='Use fake hardware')
     fake_sensor_commands_arg = DeclareLaunchArgument(
         fake_sensor_commands_parameter_name,

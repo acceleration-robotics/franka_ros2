@@ -81,7 +81,7 @@ def prepare_launch_description():
 
     load_gripper_launch_argument = DeclareLaunchArgument(
             load_gripper_name,
-            default_value='false',
+            default_value='true',
             description='true/false for activating the gripper')
     franka_hand_launch_argument = DeclareLaunchArgument(
             franka_hand_name,
@@ -103,6 +103,12 @@ def prepare_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
         launch_arguments={'gz_args': 'empty.sdf -r', }.items(),
+    )
+    pkg_moveit_config = get_package_share_directory('franka_fr3_moveit_config')
+    moveit_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_moveit_config, 'launch', 'moveit.launch.py')
+        )
     )
 
     # Spawn
@@ -134,7 +140,7 @@ def prepare_launch_description():
         arm_id_launch_argument,
         gazebo_empty_world,
         robot_state_publisher,
-        rviz,
+        # rviz,
         spawn,
         RegisterEventHandler(
                 event_handler=OnProcessExit(
@@ -148,8 +154,9 @@ def prepare_launch_description():
             name='joint_state_publisher',
             parameters=[
                 {'source_list': ['joint_states'],
-                 'rate': 30}],
+                 'rate': 30},]
         ),
+        # moveit_launch,
     ])
 
 def generate_launch_description():
